@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_task_item"
+    android:padding="12dp"
+    android:layout_marginVertical="6dp">
+
+    <View
+        android:id="@+id/priorityBorder"
+        android:layout_width="3dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/priority_overdue" />
+
+    <TextView
+        android:id="@+id/tvTaskName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/text_primary_light"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tvPriorityLabel"
+        app:layout_constraintStart_toEndOf="@id/priorityBorder"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Ensayo sobre la Revolución Industrial" />
+
+    <TextView
+        android:id="@+id/tvPriorityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_filter_chip"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="2dp"
+        android:textAllCaps="false"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Vencida"
+        tools:textColor="@color/priority_overdue" />
+
+    <LinearLayout
+        android:id="@+id/layoutSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="@id/tvTaskName"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskName">
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@android:drawable/ic_menu_view"
+            app:tint="@color/text_secondary_gray" />
+
+        <TextView
+            android:id="@+id/tvTaskSubject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/text_secondary_gray"
+            android:textSize="12sp"
+            tools:text="Historia Universal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnDeleteTaskItem"
+        app:layout_constraintStart_toStartOf="@id/tvTaskName"
+        app:layout_constraintTop_toBottomOf="@id/layoutSubject">
+
+        <ImageView
+            android:id="@+id/ivDateIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@android:drawable/ic_menu_recent_history"
+            tools:tint="@color/priority_overdue" />
+
+        <TextView
+            android:id="@+id/tvTaskDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
+            tools:text="Venció hace 1 día"
+            tools:textColor="@color/priority_overdue" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnDeleteTaskItem"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete"
+        app:tint="@color/priority_overdue"
+        android:contentDescription="Eliminar tarea"
+        android:padding="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvStatusLabel"
+        app:layout_constraintTop_toBottomOf="@id/layoutSubject"
+        android:layout_marginEnd="8dp"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvStatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_filter_chip"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:textColor="@color/status_pending"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Pendiente" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

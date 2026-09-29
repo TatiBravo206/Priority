@@ -1,0 +1,241 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <!-- Toolbar / Encabezado -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <ImageButton
+                android:id="@+id/btnDetailBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Volver"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Detalle de Tarea"
+                android:textColor="@color/text_primary_light"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnDeleteTask"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_input_field"
+                android:src="@drawable/ic_delete"
+                app:tint="@color/priority_overdue"
+                android:contentDescription="Eliminar Tarea" />
+        </LinearLayout>
+
+        <!-- Nombre de la tarea -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la tarea *"
+            android:textColor="@color/text_secondary_gray"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etDetailName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Ej. Ensayo sobre la Ilustración"
+            android:textColor="@color/text_primary_light"
+            android:textColorHint="@color/text_secondary_gray"
+            android:background="@drawable/bg_input_field"
+            android:paddingHorizontal="16dp"
+            android:textSize="15sp"
+            android:inputType="textCapSentences"
+            android:maxLines="1" />
+
+        <!-- Materia -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Materia *"
+            android:textColor="@color/text_secondary_gray"
+            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etDetailSubject"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Ej. Historia Universal"
+            android:textColor="@color/text_primary_light"
+            android:textColorHint="@color/text_secondary_gray"
+            android:background="@drawable/bg_input_field"
+            android:paddingHorizontal="16dp"
+            android:textSize="15sp"
+            android:inputType="textCapSentences"
+            android:maxLines="1" />
+
+        <!-- Descripción -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripción *"
+            android:textColor="@color/text_secondary_gray"
+            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etDetailDescription"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Describe los requisitos, pautas o notas adicionales..."
+            android:textColor="@color/text_primary_light"
+            android:textColorHint="@color/text_secondary_gray"
+            android:background="@drawable/bg_input_field"
+            android:padding="16dp"
+            android:textSize="15sp"
+            android:gravity="top|start"
+            android:inputType="textMultiLine|textCapSentences" />
+
+        <!-- Fecha de entrega -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha de entrega *"
+            android:textColor="@color/text_secondary_gray"
+            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:id="@+id/btnDetailDate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input_field"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_calendar"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="Calendario"
+                app:tint="@color/text_secondary_gray" />
+
+            <TextView
+                android:id="@+id/tvDetailSelectedDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Seleccionar fecha..."
+                android:textColor="@color/text_primary_light"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_calendar"
+                android:contentDescription="Calendario indicador"
+                app:tint="@color/purple_accent" />
+        </LinearLayout>
+
+        <!-- Estado del Proceso (Chips / Botones) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado del proceso *"
+            android:textColor="@color/text_secondary_gray"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginBottom="28dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnStatusPending"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_filter_chip_selected"
+                    android:paddingHorizontal="20dp"
+                    android:text="Pendiente"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_primary_light"
+                    android:textColorLink="#673AB7"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btnStatusInProgress"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_filter_chip"
+                    android:paddingHorizontal="20dp"
+                    android:text="En Proceso"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_primary_light"
+                    android:textColorLink="#673AB7"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btnStatusCompleted"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_filter_chip"
+                    android:paddingHorizontal="20dp"
+                    android:text="Completada"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_primary_light"
+                    android:textColorLink="#673AB7"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Guardar Cambios -->
+        <Button
+            android:id="@+id/btnUpdateTask"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:backgroundTint="#2B1950"
+            android:text="Guardar Cambios"
+            android:textColorLink="@color/text_primary_light"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
