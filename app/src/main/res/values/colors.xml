@@ -17,4 +17,8 @@
     <color name="priority_low">#30D158</color>
     <color name="status_pending">#8E8E93</color>
     <color name="status_in_progress">#0A84FF</color>
+    <color name="dark_purple">#2B1950</color>
+    <color name="dark_purple_unselected">#1B1233</color>
+    <color name="blue_purple_selected">#3D3A7C</color>
+    <color name="blue_purple_unselected">#222147</color>
 </resources>

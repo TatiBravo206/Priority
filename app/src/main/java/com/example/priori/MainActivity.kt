@@ -3,6 +3,8 @@ package com.example.priori
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -10,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         var taskList = mutableListOf<Task>()
+        var shouldShowCelebration = false
+        var shouldShowTaskAdded = false
     }
 
     private lateinit var adapter: TaskAdapter
@@ -43,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         val rvTasks = findViewById<RecyclerView>(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(this)
+
         adapter = TaskAdapter(
             tasks = taskList,
             onItemClick = { task ->
@@ -55,6 +61,15 @@ class MainActivity : AppCompatActivity() {
                 TaskManager.saveTasks(this, taskList)
                 updateDashboardCounters()
                 applyFilter()
+            },
+            onStatusChanged = { updatedTask ->
+                TaskManager.saveTasks(this, taskList)
+                updateDashboardCounters()
+                applyFilter()
+
+                if (updatedTask.status == TaskStatus.COMPLETADA) {
+                    showCelebrationDialog()
+                }
             }
         )
         rvTasks.adapter = adapter
@@ -73,6 +88,15 @@ class MainActivity : AppCompatActivity() {
         taskList = TaskManager.loadTasks(this)
         updateDashboardCounters()
         applyFilter()
+
+        //  diálogo a mostrar según el evento
+        if (shouldShowCelebration) {
+            shouldShowCelebration = false
+            showCelebrationDialog()
+        } else if (shouldShowTaskAdded) {
+            shouldShowTaskAdded = false
+            showTaskAddedDialog()
+        }
     }
 
     private fun hideSystemUI() {
@@ -99,21 +123,19 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvCountPending).text = pendingCount.toString()
         findViewById<TextView>(R.id.tvCountCompleted).text = completedCount.toString()
         findViewById<TextView>(R.id.tvCountOverdue).text = overdueCount.toString()
+
         // AVATAR DINÁMICO
         val ivAvatarMood = findViewById<ImageView>(R.id.ivAvatarMood)
 
         when {
-            // Si hay al menos una tarea vencida
             overdueCount > 0 -> {
-                ivAvatarMood.setImageResource(R.drawable.tite)
+                ivAvatarMood.setImageResource(R.drawable.estresado)
             }
-            // Si no hay pendientes o todo está completado
             pendingCount == 0 -> {
-                ivAvatarMood.setImageResource(R.drawable.tranqui)
+                ivAvatarMood.setImageResource(R.drawable.feli)
             }
-            // Situación normal
             else -> {
-                ivAvatarMood.setImageResource(R.drawable.feliz_brinco)
+                ivAvatarMood.setImageResource(R.drawable.pensante)
             }
         }
     }
@@ -159,5 +181,76 @@ class MainActivity : AppCompatActivity() {
             else -> taskList.filter { it.status == TaskStatus.PENDIENTE }
         }
         adapter.updateTasks(filtered)
+    }
+
+    // DIÁLOGO PARA CELEBRAR COMPLETAR TAREA
+    fun showCelebrationDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_celebration, null)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+
+        val alertDialog = builder.create()
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val tvTitle = dialogView.findViewById<TextView>(R.id.tvCelebrationTitle)
+
+        tvTitle?.text = "¡Aleluya! Una tarea menos"
+
+        val celebrationImages = listOf(
+            R.drawable.completo_1,
+            R.drawable.completo_2,
+            R.drawable.completo_3
+        )
+
+        val imgCelebration = dialogView.findViewById<ImageView>(R.id.imgCelebration)
+        imgCelebration?.setImageResource(celebrationImages.random())
+
+        //OSCURECER EL FONDO DETRÁS DEL DIÁLOGO
+        alertDialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        alertDialog.window?.attributes?.dimAmount = 0.95f
+
+        alertDialog.show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (!isFinishing && !isDestroyed && alertDialog.isShowing) {
+                alertDialog.dismiss()
+            }
+        }, 2500)
+    }
+
+    // DIÁLOGO PARA TAREA AGREGADA CON ÉXITO
+    fun showTaskAddedDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_celebration, null)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+
+        val alertDialog = builder.create()
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val tvTitle = dialogView.findViewById<TextView>(R.id.tvCelebrationTitle)
+
+        tvTitle?.text = "¡Tienes una tarea nueva!"
+
+        val taskAddedImages = listOf(
+            R.drawable.agregada_1,
+            R.drawable.agregada_2,
+            R.drawable.agregada_3
+        )
+
+        val imgCelebration = dialogView.findViewById<ImageView>(R.id.imgCelebration)
+        imgCelebration?.setImageResource(taskAddedImages.random())
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        //OSCURECER EL FONDO DETRÁS DEL DIÁLOGO
+        alertDialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        alertDialog.window?.attributes?.dimAmount = 0.95f
+
+        alertDialog.show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (!isFinishing && !isDestroyed && alertDialog.isShowing) {
+                alertDialog.dismiss()
+            }
+        }, 2500)
     }
 }

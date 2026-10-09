@@ -47,6 +47,10 @@ class AddTaskActivity : AppCompatActivity() {
             val newTask = Task(name = name, subject = subject, description = desc, dueDate = selectedDate!!)
             MainActivity.taskList.add(newTask)
             TaskManager.saveTasks(this, MainActivity.taskList)
+
+            // Activar la bandera para mostrar la celebración al regresar al Dashboard
+            MainActivity.shouldShowTaskAdded = true
+
             finish()
         }
 

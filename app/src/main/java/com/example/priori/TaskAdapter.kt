@@ -16,7 +16,8 @@ import java.time.temporal.ChronoUnit
 class TaskAdapter(
     private var tasks: List<Task>,
     private val onItemClick: (Task) -> Unit,
-    private val onDeleteClick: ((Task) -> Unit)? = null
+    private val onDeleteClick: ((Task) -> Unit)? = null,
+    private val onStatusChanged: ((Task) -> Unit)? = null
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -53,6 +54,28 @@ class TaskAdapter(
         } else {
             holder.btnDelete.visibility = View.GONE
             holder.btnDelete.setOnClickListener(null)
+        }
+
+        holder.tvStatusLabel.setOnClickListener {
+            val nextStatus = when (task.status) {
+                TaskStatus.PENDIENTE -> TaskStatus.EN_PROCESO
+                TaskStatus.EN_PROCESO -> TaskStatus.COMPLETADA
+                TaskStatus.COMPLETADA -> TaskStatus.PENDIENTE
+            }
+            task.status = nextStatus
+            setupStatusLabel(task, holder, context)
+
+            if (task.status == TaskStatus.COMPLETADA) {
+                holder.btnDelete.visibility = View.VISIBLE
+                holder.btnDelete.setOnClickListener {
+                    onDeleteClick?.invoke(task)
+                }
+            } else {
+                holder.btnDelete.visibility = View.GONE
+                holder.btnDelete.setOnClickListener(null)
+            }
+
+            onStatusChanged?.invoke(task)
         }
 
         holder.itemView.setOnClickListener { onItemClick(task) }

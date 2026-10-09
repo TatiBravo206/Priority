@@ -164,6 +164,7 @@
             android:layout_height="52dp"
             android:backgroundTint="@color/purple_accent"
             android:text="Guardar tarea"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
 

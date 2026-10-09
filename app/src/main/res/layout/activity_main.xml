@@ -145,7 +145,7 @@
             android:layout_weight="1.1"
             android:contentDescription="Estado de ánimo"
             android:scaleType="fitCenter"
-            android:src="@drawable/feliz_brinco" />
+            android:src="@drawable/feli" />
 
     </LinearLayout>
 

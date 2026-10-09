@@ -2,12 +2,14 @@ package com.example.priori
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import java.time.LocalDate
 import java.util.Calendar
 
@@ -31,7 +33,7 @@ class TaskDetailActivity : AppCompatActivity() {
         val etName = findViewById<EditText>(R.id.etDetailName)
         val etSubject = findViewById<EditText>(R.id.etDetailSubject)
         val etDescription = findViewById<EditText>(R.id.etDetailDescription)
-        val btnDate = findViewById<android.view.View>(R.id.btnDetailDate)
+        val btnDate = findViewById<View>(R.id.btnDetailDate)
         val tvSelectedDate = findViewById<TextView>(R.id.tvDetailSelectedDate)
         
         val btnPending = findViewById<Button>(R.id.btnStatusPending)
@@ -39,8 +41,8 @@ class TaskDetailActivity : AppCompatActivity() {
         val btnCompleted = findViewById<Button>(R.id.btnStatusCompleted)
         
         val btnUpdate = findViewById<Button>(R.id.btnUpdateTask)
-        val btnDelete = findViewById<android.view.View>(R.id.btnDeleteTask)
-        val btnBack = findViewById<android.view.View>(R.id.btnDetailBack)
+        val btnDelete = findViewById<View>(R.id.btnDeleteTask)
+        val btnBack = findViewById<View>(R.id.btnDetailBack)
 
         etName.setText(task!!.name)
         etSubject.setText(task!!.subject)
@@ -52,19 +54,22 @@ class TaskDetailActivity : AppCompatActivity() {
 
         fun updateStatusButtonsUi() {
             val context = this
-            val normalBg = R.drawable.bg_filter_chip
-            val selectedBg = R.drawable.bg_filter_chip_selected
-            val grayColor = androidx.core.content.ContextCompat.getColor(context, R.color.text_secondary_gray)
-            val whiteColor = androidx.core.content.ContextCompat.getColor(context, R.color.white)
+            val normalBg = R.drawable.bg_status_chip_unselected
+            val selectedBg = R.drawable.bg_status_chip_selected
+            val whiteColor = ContextCompat.getColor(context, R.color.white)
+
+            listOf(btnPending, btnInProgress, btnCompleted).forEach { btn ->
+                btn.backgroundTintList = null
+            }
 
             btnPending.setBackgroundResource(if (selectedStatus == TaskStatus.PENDIENTE) selectedBg else normalBg)
-            btnPending.setTextColor(if (selectedStatus == TaskStatus.PENDIENTE) whiteColor else grayColor)
+            btnPending.setTextColor(whiteColor)
 
             btnInProgress.setBackgroundResource(if (selectedStatus == TaskStatus.EN_PROCESO) selectedBg else normalBg)
-            btnInProgress.setTextColor(if (selectedStatus == TaskStatus.EN_PROCESO) whiteColor else grayColor)
+            btnInProgress.setTextColor(whiteColor)
 
             btnCompleted.setBackgroundResource(if (selectedStatus == TaskStatus.COMPLETADA) selectedBg else normalBg)
-            btnCompleted.setTextColor(if (selectedStatus == TaskStatus.COMPLETADA) whiteColor else grayColor)
+            btnCompleted.setTextColor(whiteColor)
         }
 
         updateStatusButtonsUi()
@@ -91,6 +96,9 @@ class TaskDetailActivity : AppCompatActivity() {
         }
 
         btnUpdate.setOnClickListener {
+            if (selectedStatus == TaskStatus.COMPLETADA && task!!.status != TaskStatus.COMPLETADA) {
+                MainActivity.shouldShowCelebration = true
+            }
             task!!.name = etName.text.toString()
             task!!.subject = etSubject.text.toString()
             task!!.description = etDescription.text.toString()
