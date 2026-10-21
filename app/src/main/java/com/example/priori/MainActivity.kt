@@ -1,6 +1,11 @@
 package com.example.priori
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -8,13 +13,17 @@ import android.os.Looper
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.time.LocalDate
@@ -30,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var adapter: TaskAdapter
-    private var currentFilter = "Pendientes"
+    private var selectedFilterId = R.id.btnFilterPending
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +47,14 @@ class MainActivity : AppCompatActivity() {
 
         hideSystemUI()
 
+        // Crear canal de notificaciones y solicitar permisos
+        createNotificationChannel()
+        requestNotificationPermission()
+
         // CARGAR TAREAS
         taskList = TaskManager.loadTasks(this)
 
-        val tvHeaderDate = findViewById<TextView>(R.id.tvHeaderDate)
-        val today = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("'Hoy, 'EEEE, d 'de' MMMM", Locale.forLanguageTag("es-ES"))
-        tvHeaderDate.text = today.format(formatter).replaceFirstChar { it.uppercase() }
+        updateHeaderDate()
 
         val rvTasks = findViewById<RecyclerView>(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(this)
@@ -57,12 +67,19 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             },
             onDeleteClick = { taskToDelete ->
+                NotificationScheduler.cancelTaskNotification(this, taskToDelete)
                 taskList.remove(taskToDelete)
                 TaskManager.saveTasks(this, taskList)
                 updateDashboardCounters()
                 applyFilter()
             },
             onStatusChanged = { updatedTask ->
+                if (updatedTask.status == TaskStatus.COMPLETADA) {
+                    NotificationScheduler.cancelTaskNotification(this, updatedTask)
+                } else {
+                    NotificationScheduler.scheduleTaskNotification(this, updatedTask)
+                }
+
                 TaskManager.saveTasks(this, taskList)
                 updateDashboardCounters()
                 applyFilter()
@@ -76,6 +93,10 @@ class MainActivity : AppCompatActivity() {
 
         setupFilterButtons()
 
+        findViewById<Button>(R.id.btnChangeLanguage).setOnClickListener {
+            toggleLanguage()
+        }
+
         findViewById<ImageButton>(R.id.fabAddTask).setOnClickListener {
             startActivity(Intent(this, AddTaskActivity::class.java))
         }
@@ -85,11 +106,11 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         hideSystemUI()
 
+        updateHeaderDate()
         taskList = TaskManager.loadTasks(this)
         updateDashboardCounters()
         applyFilter()
 
-        //  diálogo a mostrar según el evento
         if (shouldShowCelebration) {
             shouldShowCelebration = false
             showCelebrationDialog()
@@ -97,6 +118,49 @@ class MainActivity : AppCompatActivity() {
             shouldShowTaskAdded = false
             showTaskAddedDialog()
         }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "PRIORI_REMINDERS"
+            val name = getString(R.string.notification_channel_name)
+            val descriptionText = getString(R.string.notification_channel_desc)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+                enableVibration(true)
+            }
+
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
+    }
+
+    private fun updateHeaderDate() {
+        val tvHeaderDate = findViewById<TextView>(R.id.tvHeaderDate)
+        val today = LocalDate.now()
+        val currentLocales = LocaleListCompat.getDefault()
+        val currentLocale = if (!currentLocales.isEmpty) currentLocales[0] ?: Locale.getDefault() else Locale.getDefault()
+        val pattern = if (currentLocale.language == "en") "'Today, 'EEEE, MMMM d" else "'Hoy, 'EEEE, d 'de' MMMM"
+        val formatter = DateTimeFormatter.ofPattern(pattern, currentLocale)
+        tvHeaderDate.text = today.format(formatter).replaceFirstChar { it.uppercase() }
+    }
+
+    private fun toggleLanguage() {
+        val currentLocales = AppCompatDelegate.getApplicationLocales()
+        val currentLang = if (!currentLocales.isEmpty) currentLocales[0]?.language else Locale.getDefault().language
+        val newLang = if (currentLang == "en") "es" else "en"
+
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newLang))
     }
 
     private fun hideSystemUI() {
@@ -160,24 +224,25 @@ class MainActivity : AppCompatActivity() {
             selectedBtn.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
 
-        updateSelectedButton(btnPending)
+        val defaultSelectedBtn = findViewById<Button>(selectedFilterId) ?: btnPending
+        updateSelectedButton(defaultSelectedBtn)
 
         buttons.forEach { button ->
             button.setOnClickListener {
                 updateSelectedButton(button)
-                currentFilter = button.text.toString()
+                selectedFilterId = button.id
                 applyFilter()
             }
         }
     }
 
     private fun applyFilter() {
-        val filtered = when (currentFilter) {
-            "Pendientes" -> taskList.filter { it.status == TaskStatus.PENDIENTE }
-            "Todas" -> taskList
-            "En proceso" -> taskList.filter { it.status == TaskStatus.EN_PROCESO }
-            "Completadas" -> taskList.filter { it.status == TaskStatus.COMPLETADA }
-            "Vencidas" -> taskList.filter { it.priority == TaskPriority.VENCIDA }
+        val filtered = when (selectedFilterId) {
+            R.id.btnFilterPending -> taskList.filter { it.status == TaskStatus.PENDIENTE }
+            R.id.btnFilterAll -> taskList
+            R.id.btnFilterInProgress -> taskList.filter { it.status == TaskStatus.EN_PROCESO }
+            R.id.btnFilterCompleted -> taskList.filter { it.status == TaskStatus.COMPLETADA }
+            R.id.btnFilterOverdue -> taskList.filter { it.priority == TaskPriority.VENCIDA }
             else -> taskList.filter { it.status == TaskStatus.PENDIENTE }
         }
         adapter.updateTasks(filtered)
@@ -193,8 +258,10 @@ class MainActivity : AppCompatActivity() {
         alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val tvTitle = dialogView.findViewById<TextView>(R.id.tvCelebrationTitle)
+        val tvSubtitle = dialogView.findViewById<TextView>(R.id.tvCelebrationSubtitle)
 
-        tvTitle?.text = "¡Aleluya! Una tarea menos"
+        tvTitle?.text = getString(R.string.celebration_title)
+        tvSubtitle?.text = getString(R.string.celebration_subtitle)
 
         val celebrationImages = listOf(
             R.drawable.completo_1,
@@ -205,8 +272,7 @@ class MainActivity : AppCompatActivity() {
         val imgCelebration = dialogView.findViewById<ImageView>(R.id.imgCelebration)
         imgCelebration?.setImageResource(celebrationImages.random())
 
-        //OSCURECER EL FONDO DETRÁS DEL DIÁLOGO
-        alertDialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        alertDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         alertDialog.window?.attributes?.dimAmount = 0.95f
 
         alertDialog.show()
@@ -228,8 +294,10 @@ class MainActivity : AppCompatActivity() {
         alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val tvTitle = dialogView.findViewById<TextView>(R.id.tvCelebrationTitle)
+        val tvSubtitle = dialogView.findViewById<TextView>(R.id.tvCelebrationSubtitle)
 
-        tvTitle?.text = "¡Tienes una tarea nueva!"
+        tvTitle?.text = getString(R.string.task_added_title)
+        tvSubtitle?.visibility = View.GONE
 
         val taskAddedImages = listOf(
             R.drawable.agregada_1,
@@ -239,10 +307,8 @@ class MainActivity : AppCompatActivity() {
 
         val imgCelebration = dialogView.findViewById<ImageView>(R.id.imgCelebration)
         imgCelebration?.setImageResource(taskAddedImages.random())
-        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        //OSCURECER EL FONDO DETRÁS DEL DIÁLOGO
-        alertDialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        alertDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         alertDialog.window?.attributes?.dimAmount = 0.95f
 
         alertDialog.show()

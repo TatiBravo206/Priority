@@ -25,13 +25,13 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Volver"
+                android:contentDescription="@string/cd_back"
                 android:src="@drawable/ic_arrow_back" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nueva Tarea"
+                android:text="@string/title_new_task"
                 android:textColor="@color/text_primary_light"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Completa todos los campos"
+            android:text="@string/subtitle_new_task"
             android:textColor="@color/text_secondary_gray"
             android:textSize="14sp"
             android:layout_marginStart="56dp"
@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre de la tarea *"
+            android:text="@string/label_task_name"
             android:textColor="@color/text_secondary_gray"
             android:textSize="12sp"
             android:layout_marginTop="12dp"
@@ -59,7 +59,7 @@
             android:id="@+id/etTaskName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Ej. Ensayo sobre la Ilustración"
+            android:hint="@string/hint_task_name"
             android:textColor="@color/text_primary_light"
             android:textColorHint="@color/text_secondary_gray"
             android:background="@drawable/bg_input_field"
@@ -71,7 +71,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Materia *"
+            android:text="@string/label_subject"
             android:textColor="@color/text_secondary_gray"
             android:textSize="12sp"
             android:layout_marginTop="16dp"
@@ -81,7 +81,7 @@
             android:id="@+id/etSubject"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Ej. Historia Universal"
+            android:hint="@string/hint_subject"
             android:textColor="@color/text_primary_light"
             android:textColorHint="@color/text_secondary_gray"
             android:background="@drawable/bg_input_field"
@@ -93,7 +93,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Descripción *"
+            android:text="@string/label_description"
             android:textColor="@color/text_secondary_gray"
             android:textSize="12sp"
             android:layout_marginTop="16dp"
@@ -103,7 +103,7 @@
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:hint="Describe los requisitos, pautas o notas adicionales..."
+            android:hint="@string/hint_description"
             android:textColor="@color/text_primary_light"
             android:textColorHint="@color/text_secondary_gray"
             android:background="@drawable/bg_input_field"
@@ -115,7 +115,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fecha de entrega *"
+            android:text="@string/label_due_date"
             android:textColor="@color/text_secondary_gray"
             android:textSize="12sp"
             android:layout_marginTop="16dp"
@@ -138,7 +138,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/ic_calendar"
                 android:layout_marginEnd="12dp"
-                android:contentDescription="Calendario"
+                android:contentDescription="@string/cd_calendar"
                 app:tint="@color/text_secondary_gray" />
 
             <TextView
@@ -146,7 +146,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Seleccionar fecha..."
+                android:text="@string/select_date"
                 android:textColor="@color/text_secondary_gray"
                 android:textSize="15sp" />
 
@@ -154,7 +154,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_calendar"
-                android:contentDescription="Calendario indicador"
+                android:contentDescription="@string/cd_calendar"
                 app:tint="@color/purple_accent" />
         </LinearLayout>
 
@@ -163,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:backgroundTint="@color/purple_accent"
-            android:text="Guardar tarea"
+            android:text="@string/btn_save_task"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />

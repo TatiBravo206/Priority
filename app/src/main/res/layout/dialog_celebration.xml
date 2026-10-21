@@ -13,14 +13,14 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/agregada_1"
-        android:contentDescription="Avatar Celebración" />
+        android:contentDescription="@string/cd_avatar" />
 
     <TextView
         android:id="@+id/tvCelebrationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="¡Aleluya! Una tarea menos"
+        android:text="@string/celebration_title"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -28,5 +28,19 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4" />
+
+    <TextView
+        android:id="@+id/tvCelebrationSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/celebration_subtitle"
+        android:textColor="#E0E0E0"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3" />
 
 </LinearLayout>

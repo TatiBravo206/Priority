@@ -22,19 +22,37 @@
         android:id="@+id/tvHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mis Tareas"
+        android:text="@string/header_title"
         android:textColor="@color/text_primary_light"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHeaderDate" />
 
+    <Button
+        android:id="@+id/btnChangeLanguage"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_filter_chip"
+        app:backgroundTint="@null"
+        android:contentDescription="@string/cd_change_language"
+        android:paddingHorizontal="14dp"
+        android:text="@string/language_button"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/tvHeaderTitle"
+        app:layout_constraintEnd_toStartOf="@id/fabAddTask"
+        app:layout_constraintTop_toTopOf="@id/tvHeaderDate" />
+
     <ImageButton
         android:id="@+id/fabAddTask"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:background="@drawable/bg_fab"
-        android:contentDescription="Agregar nueva tarea"
+        android:contentDescription="@string/cd_add_task"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="@id/tvHeaderTitle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,13 +91,12 @@
                     android:text="0"
                     android:textColor="@color/purple_accent"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Por entregar"
+                    android:text="@string/summary_pending"
                     android:textColor="@color/text_secondary_gray"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -105,7 +122,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Completadas"
+                    android:text="@string/summary_completed"
                     android:textColor="@color/text_secondary_gray"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -130,7 +147,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vencidas"
+                    android:text="@string/summary_overdue"
                     android:textColor="@color/text_secondary_gray"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -143,7 +160,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.1"
-            android:contentDescription="Estado de ánimo"
+            android:contentDescription="@string/cd_avatar"
             android:scaleType="fitCenter"
             android:src="@drawable/feli" />
 
@@ -170,7 +187,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_filter_chip_selected"
                 app:backgroundTint="@null"
-                android:text="Pendientes"
+                android:text="@string/filter_pending"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -182,7 +199,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_filter_chip"
                 app:backgroundTint="@null"
-                android:text="Todas"
+                android:text="@string/filter_all"
                 android:textAllCaps="false"
                 android:textColor="@color/text_secondary_gray" />
 
@@ -194,7 +211,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_filter_chip"
                 app:backgroundTint="@null"
-                android:text="En proceso"
+                android:text="@string/filter_in_progress"
                 android:textAllCaps="false"
                 android:textColor="@color/text_secondary_gray" />
 
@@ -206,7 +223,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_filter_chip"
                 app:backgroundTint="@null"
-                android:text="Completadas"
+                android:text="@string/filter_completed"
                 android:textAllCaps="false"
                 android:textColor="@color/text_secondary_gray" />
 
@@ -217,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_filter_chip"
                 app:backgroundTint="@null"
-                android:text="Vencidas"
+                android:text="@string/filter_overdue"
                 android:textAllCaps="false"
                 android:textColor="@color/text_secondary_gray" />
         </LinearLayout>

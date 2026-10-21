@@ -3,10 +3,8 @@ package com.example.priori
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -99,16 +97,25 @@ class TaskDetailActivity : AppCompatActivity() {
             if (selectedStatus == TaskStatus.COMPLETADA && task!!.status != TaskStatus.COMPLETADA) {
                 MainActivity.shouldShowCelebration = true
             }
+
             task!!.name = etName.text.toString()
             task!!.subject = etSubject.text.toString()
             task!!.description = etDescription.text.toString()
             task!!.dueDate = selectedDate!!
             task!!.status = selectedStatus
+
+            if (selectedStatus == TaskStatus.COMPLETADA) {
+                NotificationScheduler.cancelTaskNotification(this, task!!)
+            } else {
+                NotificationScheduler.scheduleTaskNotification(this, task!!)
+            }
+
             TaskManager.saveTasks(this, MainActivity.taskList)
             finish()
         }
 
         btnDelete.setOnClickListener {
+            NotificationScheduler.cancelTaskNotification(this, task!!)
             MainActivity.taskList.remove(task)
             TaskManager.saveTasks(this, MainActivity.taskList)
             finish()

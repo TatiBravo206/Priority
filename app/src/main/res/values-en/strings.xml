@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Priority</string>
+
+    <!-- Header & Navigation -->
+    <string name="header_title">My Tasks</string>
+    <string name="language_button">ES</string>
+
+    <!-- Accessibility Descriptions -->
+    <string name="cd_add_task">Add new task</string>
+    <string name="cd_change_language">Change language</string>
+    <string name="cd_avatar">Mood avatar</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_delete_task">Delete Task</string>
+    <string name="cd_calendar">Calendar</string>
+
+    <!-- Summary Cards -->
+    <string name="summary_pending">To deliver</string>
+    <string name="summary_completed">Completed</string>
+    <string name="summary_overdue">Overdue</string>
+
+    <!-- Filter Chips -->
+    <string name="filter_pending">Pending</string>
+    <string name="filter_all">All</string>
+    <string name="filter_in_progress">In progress</string>
+    <string name="filter_completed">Completed</string>
+    <string name="filter_overdue">Overdue</string>
+
+    <!-- Task Priorities -->
+    <string name="priority_overdue">Overdue</string>
+    <string name="priority_urgent">Urgent</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
+
+    <!-- Due Dates -->
+    <string name="due_today">Due today</string>
+    <string name="overdue_days">Overdue by %1$d day(s)</string>
+    <string name="due_in_days">Due in %1$d days</string>
+
+    <!-- Task Statuses -->
+    <string name="status_pending">Pending</string>
+    <string name="status_in_progress">In progress</string>
+    <string name="status_completed">Completed</string>
+
+    <!-- New Task Activity -->
+    <string name="title_new_task">New Task</string>
+    <string name="subtitle_new_task">Fill in all fields</string>
+    <string name="label_task_name">Task Name *</string>
+    <string name="hint_task_name">E.g., Essay on the Enlightenment</string>
+    <string name="label_subject">Subject *</string>
+    <string name="hint_subject">E.g., World History</string>
+    <string name="label_description">Description *</string>
+    <string name="hint_description">Describe requirements, guidelines, or extra notes...</string>
+    <string name="label_due_date">Due Date *</string>
+    <string name="select_date">Select date...</string>
+    <string name="selected_date_prefix">Date: %1$s</string>
+    <string name="btn_save_task">Save task</string>
+    <string name="toast_fill_all_fields">Please fill in all fields</string>
+
+    <!-- Task Detail Activity -->
+    <string name="title_task_detail">Task Details</string>
+    <string name="label_process_status">Process Status *</string>
+    <string name="btn_save_changes">Save Changes</string>
+
+    <!-- Dialogs -->
+    <string name="celebration_title">Great job!</string>
+    <string name="celebration_subtitle">You have completed this task</string>
+    <string name="task_added_title">Task Saved!</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Task Reminders</string>
+    <string name="notification_channel_desc">Channel for task due notifications</string>
+    <string name="notification_reminder_title">Task Reminder!</string>
+    <string name="notification_reminder_body">Due today: %1$s (%2$s)</string>
+</resources>

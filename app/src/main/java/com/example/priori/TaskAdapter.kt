@@ -86,11 +86,31 @@ class TaskAdapter(
         val daysRemaining = ChronoUnit.DAYS.between(today, task.dueDate)
 
         val (priorityText, dateText, color) = when {
-            daysRemaining < 0 -> Triple("Vencida", "Venció hace ${-daysRemaining} día(s)", ContextCompat.getColor(context, R.color.priority_overdue))
-            daysRemaining == 0L -> Triple("Urgente", "Vence hoy", ContextCompat.getColor(context, R.color.priority_high))
-            daysRemaining in 1..2 -> Triple("Urgente", "Vence en $daysRemaining días", ContextCompat.getColor(context, R.color.priority_high))
-            daysRemaining in 3..5 -> Triple("Media", "Vence en $daysRemaining días", ContextCompat.getColor(context, R.color.priority_medium))
-            else -> Triple("Baja", "Vence en $daysRemaining días", ContextCompat.getColor(context, R.color.priority_low))
+            daysRemaining < 0 -> Triple(
+                context.getString(R.string.priority_overdue),
+                context.getString(R.string.overdue_days, -daysRemaining),
+                ContextCompat.getColor(context, R.color.priority_overdue)
+            )
+            daysRemaining == 0L -> Triple(
+                context.getString(R.string.priority_urgent),
+                context.getString(R.string.due_today),
+                ContextCompat.getColor(context, R.color.priority_high)
+            )
+            daysRemaining in 1..2 -> Triple(
+                context.getString(R.string.priority_urgent),
+                context.getString(R.string.due_in_days, daysRemaining),
+                ContextCompat.getColor(context, R.color.priority_high)
+            )
+            daysRemaining in 3..5 -> Triple(
+                context.getString(R.string.priority_medium),
+                context.getString(R.string.due_in_days, daysRemaining),
+                ContextCompat.getColor(context, R.color.priority_medium)
+            )
+            else -> Triple(
+                context.getString(R.string.priority_low),
+                context.getString(R.string.due_in_days, daysRemaining),
+                ContextCompat.getColor(context, R.color.priority_low)
+            )
         }
 
         holder.tvPriorityLabel.text = priorityText
@@ -103,9 +123,9 @@ class TaskAdapter(
 
     private fun setupStatusLabel(task: Task, holder: TaskViewHolder, context: Context) {
         val (statusText, statusColor) = when (task.status) {
-            TaskStatus.PENDIENTE -> "Pendiente" to ContextCompat.getColor(context, R.color.status_pending)
-            TaskStatus.EN_PROCESO -> "En proceso" to ContextCompat.getColor(context, R.color.status_in_progress)
-            TaskStatus.COMPLETADA -> "Completada" to ContextCompat.getColor(context, R.color.priority_low)
+            TaskStatus.PENDIENTE -> context.getString(R.string.status_pending) to ContextCompat.getColor(context, R.color.status_pending)
+            TaskStatus.EN_PROCESO -> context.getString(R.string.status_in_progress) to ContextCompat.getColor(context, R.color.status_in_progress)
+            TaskStatus.COMPLETADA -> context.getString(R.string.status_completed) to ContextCompat.getColor(context, R.color.priority_low)
         }
         holder.tvStatusLabel.text = statusText
         holder.tvStatusLabel.setTextColor(statusColor)
